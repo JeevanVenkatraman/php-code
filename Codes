@@ -1,0 +1,23 @@
+<?php
+$apiKey = 'Enter_License_Key';
+$params['format']= 'json';
+$params['email'] = 'Enter_Email';
+$query = '';
+foreach($params as $key=>$value){
+$query .= '&' . $key . '=' . rawurlencode($value);
+}
+$try = 0;
+do {
+////////////
+//For https request, please make sure you have enabled php_openssl.dll extension.
+//
+//How to enable https
+//- Uncomment ;extension=php_openssl.dll by removing the semicolon in your php.ini, and restart the apache.
+//
+//In case you have difficulty to modify the php.ini, you can always make the http request instead of https.
+////////////
+$result = file_get_contents('https://api.mailboxvalidator.com/v1/validation/single?key=' . $apiKey . $query);
+} while(!$result && $rty++ < 3);
+$data = json_decode($result);
+print_r($data);
+?>
